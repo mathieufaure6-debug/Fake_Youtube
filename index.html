@@ -344,37 +344,66 @@
         /* Configuration Panel */
         .config-panel {
             position: fixed;
-            top: 70px;
+            top: 60px;
             right: 20px;
             background: #1f1f1f;
             border: 1px solid #303030;
             border-radius: 12px;
-            padding: 20px;
+            padding: 16px;
+            padding-bottom: 8px;
             width: 350px;
-            max-height: calc(100vh - 100px);
+            max-height: calc(100vh - 80px);
             overflow-y: auto;
+            overflow-x: hidden;
             z-index: 1000;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Scrollbar styling for config panel */
+        .config-panel::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        .config-panel::-webkit-scrollbar-track {
+            background: #121212;
+            border-radius: 6px;
+            margin: 4px;
+        }
+
+        .config-panel::-webkit-scrollbar-thumb {
+            background: #3ea6ff;
+            border-radius: 6px;
+            border: 2px solid #1f1f1f;
+        }
+
+        .config-panel::-webkit-scrollbar-thumb:hover {
+            background: #65b8ff;
+        }
+        
+        /* Firefox scrollbar */
+        .config-panel {
+            scrollbar-width: thin;
+            scrollbar-color: #3ea6ff #121212;
         }
 
         .config-header {
             font-size: 18px;
             font-weight: 500;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
             color: #f1f1f1;
             border-bottom: 1px solid #303030;
-            padding-bottom: 12px;
+            padding-bottom: 8px;
         }
 
         .config-section {
-            margin-bottom: 20px;
+            margin-bottom: 12px;
         }
 
         .config-label {
             display: block;
-            font-size: 14px;
+            font-size: 13px;
             color: #aaaaaa;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .config-input {
@@ -382,9 +411,9 @@
             background: #121212;
             border: 1px solid #303030;
             border-radius: 8px;
-            padding: 10px 12px;
+            padding: 8px 10px;
             color: #f1f1f1;
-            font-size: 14px;
+            font-size: 13px;
             outline: none;
         }
 
@@ -397,13 +426,13 @@
             background: #3ea6ff;
             border: none;
             border-radius: 8px;
-            padding: 10px;
+            padding: 8px;
             color: #0f0f0f;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
             cursor: pointer;
             transition: background 0.2s;
-            margin-top: 8px;
+            margin-top: 6px;
         }
 
         .config-button:hover {
@@ -419,9 +448,9 @@
             background: #272727;
             border: none;
             border-radius: 8px;
-            padding: 10px 16px;
+            padding: 8px 14px;
             color: #f1f1f1;
-            font-size: 14px;
+            font-size: 13px;
             cursor: pointer;
             transition: background 0.2s;
             text-align: center;
@@ -495,14 +524,14 @@
     </div>
 
     <!-- Configuration Panel -->
-    <div class="config-panel" id="configPanel">
+    <div class="config-panel" id="configPanel" style="display: none;">
         <div class="config-header">⚙️ Personnalisation</div>
         
         <div class="config-section">
             <label class="config-label">URL de la vidéo (YouTube, MP4, Dropbox, etc.)</label>
             <input type="text" class="config-input" id="videoUrl" placeholder="https://www.youtube.com/watch?v=... ou https://www.dropbox.com/...">
             <button class="config-button" onclick="updateVideo()">Charger la vidéo</button>
-            <div style="font-size: 12px; color: #888; margin-top: 8px;">
+            <div style="font-size: 11px; color: #888; margin-top: 6px;">
                 💡 Pour Dropbox : utilisez le lien de partage direct
             </div>
         </div>
@@ -511,7 +540,7 @@
             <label class="config-label">OU Fichier vidéo local</label>
             <input type="file" class="file-input" id="videoFile" accept="video/*" onchange="loadLocalVideo()">
             <label for="videoFile" class="file-label">📁 Choisir un fichier</label>
-            <div style="font-size: 12px; color: #888; margin-top: 8px;">
+            <div style="font-size: 11px; color: #888; margin-top: 6px;">
                 💡 Seuls les fichiers < 10MB peuvent être sauvegardés. Pour les gros fichiers, utilisez Dropbox.
             </div>
         </div>
@@ -551,11 +580,25 @@
             <label class="config-label">Image de la sidebar (PNG/JPG)</label>
             <input type="text" class="config-input" id="sidebarUrl" placeholder="https://www.dropbox.com/... (optionnel)">
             <button class="config-button" onclick="loadSidebarFromUrl()">Charger depuis URL</button>
-            <div style="font-size: 12px; color: #888; margin-top: 8px; margin-bottom: 12px;">
+            <div style="font-size: 11px; color: #888; margin-top: 6px; margin-bottom: 8px;">
                 💡 Ou choisissez un fichier local :
             </div>
             <input type="file" class="file-input" id="sidebarImage" accept="image/png,image/jpeg" onchange="loadSidebarImage()">
             <label for="sidebarImage" class="file-label">🖼️ Choisir un fichier local</label>
+        </div>
+
+        <div class="config-section" style="border-top: 2px solid #303030; padding-top: 12px; margin-top: 12px;">
+            <label class="config-label">💾 Partage de configuration</label>
+            <button class="config-button" onclick="exportConfiguration()" style="background: #00a67e; margin-bottom: 6px;">
+                📤 Exporter la configuration
+            </button>
+            <button class="config-button" onclick="document.getElementById('importFile').click()" style="background: #ff9500;">
+                📥 Importer une configuration
+            </button>
+            <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importConfiguration(event)">
+            <div style="font-size: 11px; color: #888; margin-top: 6px;">
+                💡 Pour GitHub Pages : exportez et renommez le fichier en "config.json", puis uploadez-le sur GitHub à côté du fichier HTML
+            </div>
         </div>
     </div>
 
@@ -646,8 +689,30 @@
     <script>
         // Load saved configuration on page load
         window.addEventListener('DOMContentLoaded', function() {
-            loadConfiguration();
+            // Try to load from external config first, then fallback to localStorage
+            loadExternalConfig();
         });
+        
+        function loadExternalConfig() {
+            // Try to load config.json from the same directory
+            fetch('config.json')
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error('No external config found');
+                })
+                .then(config => {
+                    console.log('Configuration externe chargée');
+                    // Save to localStorage and load
+                    localStorage.setItem('youtubeConfig', JSON.stringify(config));
+                    loadConfiguration();
+                })
+                .catch(error => {
+                    console.log('Pas de config externe, chargement depuis localStorage');
+                    loadConfiguration();
+                });
+        }
 
         function toggleConfig() {
             const panel = document.getElementById('configPanel');
@@ -706,12 +771,13 @@
             const savedConfig = localStorage.getItem('youtubeConfig');
             const configVisible = localStorage.getItem('configVisible');
             
-            // Handle config panel visibility
+            // Handle config panel visibility - default is hidden
             const panel = document.getElementById('configPanel');
-            if (configVisible === 'false') {
-                panel.style.display = 'none';
-            } else {
+            if (configVisible === 'true') {
                 panel.style.display = 'block';
+            } else {
+                // Default to hidden
+                panel.style.display = 'none';
             }
             
             if (savedConfig) {
@@ -1056,6 +1122,85 @@
             };
             
             img.src = imageUrl;
+        }
+
+        function exportConfiguration() {
+            const savedConfig = localStorage.getItem('youtubeConfig');
+            
+            if (!savedConfig) {
+                alert('Aucune configuration à exporter. Veuillez d\'abord configurer votre page.');
+                return;
+            }
+            
+            try {
+                const config = JSON.parse(savedConfig);
+                
+                // Créer un blob avec la configuration JSON
+                const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                
+                // Créer un lien de téléchargement
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'youtube-config-' + new Date().toISOString().split('T')[0] + '.json';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                console.log('Configuration exportée avec succès');
+                alert('✅ Configuration exportée ! Le fichier a été téléchargé.');
+            } catch (e) {
+                console.error('Erreur lors de l\'export:', e);
+                alert('❌ Erreur lors de l\'export de la configuration.');
+            }
+        }
+
+        function importConfiguration(event) {
+            const file = event.target.files[0];
+            
+            if (!file) {
+                return;
+            }
+            
+            if (!file.name.endsWith('.json')) {
+                alert('❌ Veuillez sélectionner un fichier JSON valide.');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const config = JSON.parse(e.target.result);
+                    
+                    // Valider que c'est bien une configuration valide
+                    if (!config.videoTitle && !config.channelName) {
+                        alert('❌ Fichier de configuration invalide.');
+                        return;
+                    }
+                    
+                    // Sauvegarder la configuration importée
+                    localStorage.setItem('youtubeConfig', JSON.stringify(config));
+                    
+                    console.log('Configuration importée:', config);
+                    alert('✅ Configuration importée avec succès ! La page va se recharger.');
+                    
+                    // Recharger la page pour appliquer la nouvelle configuration
+                    location.reload();
+                } catch (e) {
+                    console.error('Erreur lors de l\'import:', e);
+                    alert('❌ Erreur lors de l\'import. Vérifiez que le fichier est valide.');
+                }
+            };
+            
+            reader.onerror = function() {
+                alert('❌ Erreur lors de la lecture du fichier.');
+            };
+            
+            reader.readAsText(file);
+            
+            // Réinitialiser l'input pour permettre de réimporter le même fichier
+            event.target.value = '';
         }
     </script>
 </body>
