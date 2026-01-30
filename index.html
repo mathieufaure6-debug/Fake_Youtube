@@ -344,15 +344,15 @@
         /* Configuration Panel */
         .config-panel {
             position: fixed;
-            top: 60px;
+            top: 56px;
             right: 20px;
             background: #1f1f1f;
             border: 1px solid #303030;
             border-radius: 12px;
-            padding: 16px;
-            padding-bottom: 8px;
+            padding: 14px;
+            padding-bottom: 6px;
             width: 350px;
-            max-height: calc(100vh - 80px);
+            max-height: calc(100vh - 70px);
             overflow-y: auto;
             overflow-x: hidden;
             z-index: 1000;
@@ -389,21 +389,21 @@
         .config-header {
             font-size: 18px;
             font-weight: 500;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             color: #f1f1f1;
             border-bottom: 1px solid #303030;
-            padding-bottom: 8px;
+            padding-bottom: 6px;
         }
 
         .config-section {
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .config-label {
             display: block;
             font-size: 13px;
             color: #aaaaaa;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
         }
 
         .config-input {
@@ -411,7 +411,7 @@
             background: #121212;
             border: 1px solid #303030;
             border-radius: 8px;
-            padding: 8px 10px;
+            padding: 7px 9px;
             color: #f1f1f1;
             font-size: 13px;
             outline: none;
@@ -426,13 +426,13 @@
             background: #3ea6ff;
             border: none;
             border-radius: 8px;
-            padding: 8px;
+            padding: 7px;
             color: #0f0f0f;
             font-size: 13px;
             font-weight: 500;
             cursor: pointer;
             transition: background 0.2s;
-            margin-top: 6px;
+            margin-top: 5px;
         }
 
         .config-button:hover {
@@ -448,7 +448,7 @@
             background: #272727;
             border: none;
             border-radius: 8px;
-            padding: 8px 14px;
+            padding: 7px 12px;
             color: #f1f1f1;
             font-size: 13px;
             cursor: pointer;
@@ -525,13 +525,22 @@
 
     <!-- Configuration Panel -->
     <div class="config-panel" id="configPanel" style="display: none;">
-        <div class="config-header">⚙️ Personnalisation</div>
-        
+        <div class="config-header">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                <span>⚙️ Config</span>
+                <div style="display: flex; gap: 6px;">
+                    <button onclick="exportConfiguration()" style="background: #00a67e; border: none; border-radius: 6px; padding: 6px 10px; color: #fff; font-size: 11px; cursor: pointer; white-space: nowrap;">📤 Export</button>
+                    <button onclick="document.getElementById('importFile').click()" style="background: #ff9500; border: none; border-radius: 6px; padding: 6px 10px; color: #fff; font-size: 11px; cursor: pointer; white-space: nowrap;">📥 Import</button>
+                    <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importConfiguration(event)">
+                </div>
+            </div>
+        </div>
+
         <div class="config-section">
             <label class="config-label">URL de la vidéo (YouTube, MP4, Dropbox, etc.)</label>
             <input type="text" class="config-input" id="videoUrl" placeholder="https://www.youtube.com/watch?v=... ou https://www.dropbox.com/...">
             <button class="config-button" onclick="updateVideo()">Charger la vidéo</button>
-            <div style="font-size: 11px; color: #888; margin-top: 6px;">
+            <div style="font-size: 10px; color: #888; margin-top: 4px;">
                 💡 Pour Dropbox : utilisez le lien de partage direct
             </div>
         </div>
@@ -540,8 +549,8 @@
             <label class="config-label">OU Fichier vidéo local</label>
             <input type="file" class="file-input" id="videoFile" accept="video/*" onchange="loadLocalVideo()">
             <label for="videoFile" class="file-label">📁 Choisir un fichier</label>
-            <div style="font-size: 11px; color: #888; margin-top: 6px;">
-                💡 Seuls les fichiers < 10MB peuvent être sauvegardés. Pour les gros fichiers, utilisez Dropbox.
+            <div style="font-size: 10px; color: #888; margin-top: 4px;">
+                💡 Fichiers < 10MB. Pour gros fichiers: Dropbox
             </div>
         </div>
 
@@ -562,8 +571,13 @@
 
         <div class="config-section">
             <label class="config-label">Avatar de la chaîne</label>
+            <input type="text" class="config-input" id="avatarUrl" placeholder="https://www.dropbox.com/... (optionnel)">
+            <button class="config-button" onclick="loadAvatarFromUrl()">Charger depuis URL</button>
+            <div style="font-size: 10px; color: #888; margin-top: 4px; margin-bottom: 5px;">
+                💡 Ou fichier local :
+            </div>
             <input type="file" class="file-input" id="avatarFile" accept="image/*" onchange="loadAvatar()">
-            <label for="avatarFile" class="file-label">📷 Choisir une image</label>
+            <label for="avatarFile" class="file-label">📷 Choisir un fichier local</label>
         </div>
 
         <div class="config-section">
@@ -580,25 +594,11 @@
             <label class="config-label">Image de la sidebar (PNG/JPG)</label>
             <input type="text" class="config-input" id="sidebarUrl" placeholder="https://www.dropbox.com/... (optionnel)">
             <button class="config-button" onclick="loadSidebarFromUrl()">Charger depuis URL</button>
-            <div style="font-size: 11px; color: #888; margin-top: 6px; margin-bottom: 8px;">
-                💡 Ou choisissez un fichier local :
+            <div style="font-size: 10px; color: #888; margin-top: 4px; margin-bottom: 5px;">
+                💡 Ou fichier local :
             </div>
             <input type="file" class="file-input" id="sidebarImage" accept="image/png,image/jpeg" onchange="loadSidebarImage()">
             <label for="sidebarImage" class="file-label">🖼️ Choisir un fichier local</label>
-        </div>
-
-        <div class="config-section" style="border-top: 2px solid #303030; padding-top: 12px; margin-top: 12px;">
-            <label class="config-label">💾 Partage de configuration</label>
-            <button class="config-button" onclick="exportConfiguration()" style="background: #00a67e; margin-bottom: 6px;">
-                📤 Exporter la configuration
-            </button>
-            <button class="config-button" onclick="document.getElementById('importFile').click()" style="background: #ff9500;">
-                📥 Importer une configuration
-            </button>
-            <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importConfiguration(event)">
-            <div style="font-size: 11px; color: #888; margin-top: 6px;">
-                💡 Pour GitHub Pages : exportez et renommez le fichier en "config.json", puis uploadez-le sur GitHub à côté du fichier HTML
-            </div>
         </div>
     </div>
 
@@ -809,6 +809,16 @@
                     }
                     if (config.channelAvatar && config.channelAvatar.startsWith('data:')) {
                         document.getElementById('channelAvatar').src = config.channelAvatar;
+                    } else if (config.channelAvatar && (config.channelAvatar.startsWith('http://') || config.channelAvatar.startsWith('https://'))) {
+                        // Si c'est une URL (Dropbox ou autre)
+                        document.getElementById('channelAvatar').src = config.channelAvatar;
+                        
+                        // Restaurer l'URL dans le champ si c'est un lien Dropbox
+                        if (config.channelAvatar.includes('dropbox')) {
+                            // Reconvertir en lien Dropbox standard pour l'affichage
+                            let originalUrl = config.channelAvatar.replace('dl.dropboxusercontent.com', 'www.dropbox.com');
+                            document.getElementById('avatarUrl').value = originalUrl;
+                        }
                     }
                     if (config.sidebarImage && config.sidebarImage.startsWith('data:')) {
                         const img = document.getElementById('sidebarBgImage');
@@ -1031,9 +1041,80 @@
                 reader.onload = function(e) {
                     document.getElementById('channelAvatar').src = e.target.result;
                     saveConfiguration();
+                    console.log('Avatar chargé depuis fichier local');
                 };
                 reader.readAsDataURL(file);
             }
+        }
+
+        function loadAvatarFromUrl() {
+            const url = document.getElementById('avatarUrl').value;
+            
+            if (!url || url.trim() === '') {
+                alert('Veuillez entrer une URL d\'image');
+                return;
+            }
+            
+            // Convertir le lien Dropbox en lien direct si nécessaire
+            let imageUrl = url;
+            if (url.includes('dropbox.com')) {
+                imageUrl = url.replace('www.dropbox.com', 'dl.dropboxusercontent.com');
+                imageUrl = imageUrl.replace(/[\?&]dl=[01]/, '');
+                console.log('Lien Dropbox converti:', imageUrl);
+            }
+            
+            // Charger l'image
+            const avatar = document.getElementById('channelAvatar');
+            
+            // Créer une nouvelle image pour tester le chargement
+            const testImg = new Image();
+            testImg.onload = function() {
+                // L'image s'est chargée avec succès
+                avatar.src = imageUrl;
+                
+                // Convertir en base64 pour la sauvegarde
+                convertAvatarToBase64(imageUrl);
+                console.log('Avatar chargé depuis URL');
+            };
+            testImg.onerror = function() {
+                alert('❌ Impossible de charger l\'image. Vérifiez que le lien Dropbox est un lien de partage direct.');
+                console.error('Erreur de chargement de l\'avatar:', imageUrl);
+            };
+            testImg.src = imageUrl;
+        }
+
+        function convertAvatarToBase64(imageUrl) {
+            // Créer un canvas pour convertir l'image en base64
+            const img = new Image();
+            img.crossOrigin = 'Anonymous'; // Tenter d'activer CORS
+            
+            img.onload = function() {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0);
+                
+                try {
+                    const base64 = canvas.toDataURL('image/png');
+                    // Mettre à jour avec la version base64
+                    document.getElementById('channelAvatar').src = base64;
+                    saveConfiguration();
+                    console.log('Avatar converti en base64 et sauvegardé');
+                } catch (e) {
+                    // Si la conversion échoue (problème CORS), sauvegarder l'URL directement
+                    console.warn('Impossible de convertir en base64 (CORS), sauvegarde de l\'URL');
+                    saveConfiguration();
+                }
+            };
+            
+            img.onerror = function() {
+                // En cas d'erreur, sauvegarder quand même l'URL
+                console.warn('Impossible de convertir en base64, sauvegarde de l\'URL');
+                saveConfiguration();
+            };
+            
+            img.src = imageUrl;
         }
 
         function loadSidebarImage() {
