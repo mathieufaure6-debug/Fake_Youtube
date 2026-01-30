@@ -756,7 +756,9 @@
                 videoStats: document.getElementById('videoStats').value,
                 videoDescription: document.getElementById('videoDescription').value,
                 channelAvatar: document.getElementById('channelAvatar').src,
+                avatarUrl: document.getElementById('avatarUrl').value,
                 sidebarImage: document.getElementById('sidebarBgImage').src,
+                sidebarUrl: document.getElementById('sidebarUrl').value,
                 videoSrc: videoSrc
             };
             
@@ -807,19 +809,19 @@
                         document.getElementById('videoDescription').value = config.videoDescription;
                         document.getElementById('displayDescription').textContent = config.videoDescription;
                     }
+                    // Restore URL fields
+                    if (config.avatarUrl) document.getElementById('avatarUrl').value = config.avatarUrl;
+                    if (config.sidebarUrl) document.getElementById('sidebarUrl').value = config.sidebarUrl;
+                    
+                    // Restore avatar
                     if (config.channelAvatar && config.channelAvatar.startsWith('data:')) {
                         document.getElementById('channelAvatar').src = config.channelAvatar;
                     } else if (config.channelAvatar && (config.channelAvatar.startsWith('http://') || config.channelAvatar.startsWith('https://'))) {
                         // Si c'est une URL (Dropbox ou autre)
                         document.getElementById('channelAvatar').src = config.channelAvatar;
-                        
-                        // Restaurer l'URL dans le champ si c'est un lien Dropbox
-                        if (config.channelAvatar.includes('dropbox')) {
-                            // Reconvertir en lien Dropbox standard pour l'affichage
-                            let originalUrl = config.channelAvatar.replace('dl.dropboxusercontent.com', 'www.dropbox.com');
-                            document.getElementById('avatarUrl').value = originalUrl;
-                        }
                     }
+                    
+                    // Restore sidebar image
                     if (config.sidebarImage && config.sidebarImage.startsWith('data:')) {
                         const img = document.getElementById('sidebarBgImage');
                         img.src = config.sidebarImage;
@@ -831,13 +833,6 @@
                         img.src = config.sidebarImage;
                         img.style.display = 'block';
                         img.nextElementSibling.style.display = 'none';
-                        
-                        // Restaurer l'URL dans le champ si c'est un lien Dropbox
-                        if (config.sidebarImage.includes('dropbox')) {
-                            // Reconvertir en lien Dropbox standard pour l'affichage
-                            let originalUrl = config.sidebarImage.replace('dl.dropboxusercontent.com', 'www.dropbox.com');
-                            document.getElementById('sidebarUrl').value = originalUrl;
-                        }
                     }
                     
                     // Restore video
@@ -1002,7 +997,9 @@
                 videoStats: document.getElementById('videoStats').value,
                 videoDescription: document.getElementById('videoDescription').value,
                 channelAvatar: document.getElementById('channelAvatar').src,
+                avatarUrl: document.getElementById('avatarUrl').value,
                 sidebarImage: document.getElementById('sidebarBgImage').src,
+                sidebarUrl: document.getElementById('sidebarUrl').value,
                 videoSrc: videoData,
                 isLocalFile: true
             };
